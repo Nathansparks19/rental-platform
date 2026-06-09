@@ -5,7 +5,7 @@ from app.routers import auth, properties, applications
 
 load_dotenv()
 
-app = FastAPI(title="Nestify API")
+app = FastAPI(title="Ilé API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,4 +21,4 @@ app.include_router(applications.router)
 
 @app.get("/")
 def root():
-    return {"message": "Nestify API is running"}
+    return {"message": "Ilé API is running"}

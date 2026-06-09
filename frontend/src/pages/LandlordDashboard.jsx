@@ -59,7 +59,7 @@ export default function LandlordDashboard() {
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
       <div className="w-64 bg-white border-r border-gray-100 flex flex-col py-8 px-4 fixed h-full">
-        <Link to="/" className="text-2xl font-bold text-blue-600 px-4 mb-10">Nestify</Link>
+        <Link to="/" className="text-2xl font-bold text-blue-600 px-4 mb-10">Ilé</Link>
         <nav className="space-y-1 flex-1">
           {[
             { id: 'overview', label: 'Overview', icon: Home },
@@ -220,8 +220,8 @@ export default function LandlordDashboard() {
         {activeTab === 'payments' && (
           <div className="space-y-4">
             <div className="bg-green-50 rounded-2xl p-6 mb-2">
-              <p className="text-green-600 font-semibold">Nestify pays you upfront</p>
-              <p className="text-green-400 text-sm mt-1">You receive the full annual rent. Tenants pay monthly to Nestify.</p>
+              <p className="text-green-600 font-semibold">Ilé pays you upfront</p>
+              <p className="text-green-400 text-sm mt-1">You receive the full annual rent. Tenants pay monthly to Ilé.</p>
             </div>
             {payments.map(payment => (
               <div key={payment.id} className="bg-white rounded-2xl p-6 shadow-sm flex items-center justify-between">

@@ -59,7 +59,7 @@ export default function TenantDashboard() {
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
       <div className="w-64 bg-white border-r border-gray-100 flex flex-col py-8 px-4 fixed h-full">
-        <Link to="/" className="text-2xl font-bold text-blue-600 px-4 mb-10">Nestify</Link>
+        <Link to="/" className="text-2xl font-bold text-blue-600 px-4 mb-10">Ilé</Link>
         <nav className="space-y-1 flex-1">
           {[
             { id: 'overview', label: 'Overview', icon: Home },

@@ -17,7 +17,11 @@ export default function Login() {
       if (data.access_token) {
         localStorage.setItem('token', data.access_token)
         localStorage.setItem('user', JSON.stringify(data.user))
-        navigate('/tenant')
+        if (data.user.role === 'landlord') {
+          navigate('/landlord')
+        } else {
+          navigate('/tenant')
+        }
       } else {
         setError(data.detail || 'Login failed')
       }
@@ -30,13 +34,13 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <nav className="flex items-center justify-between px-8 py-5 bg-white border-b border-gray-100">
-        <Link to="/" className="text-2xl font-bold text-blue-600">Nestify</Link>
+        <Link to="/" className="text-2xl font-bold text-blue-600">Ilé</Link>
       </nav>
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="bg-white rounded-2xl shadow-sm p-8 w-full max-w-md">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h1>
-          <p className="text-gray-500 mb-8">Sign in to your Nestify account</p>
+          <p className="text-gray-500 mb-8">Sign in to your Ilé account</p>
 
           {error && (
             <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl mb-4 text-sm">

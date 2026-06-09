@@ -30,13 +30,13 @@ export default function Register() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <nav className="flex items-center justify-between px-8 py-5 bg-white border-b border-gray-100">
-        <Link to="/" className="text-2xl font-bold text-blue-600">Nestify</Link>
+        <Link to="/" className="text-2xl font-bold text-blue-600">Ilé</Link>
       </nav>
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="bg-white rounded-2xl shadow-sm p-8 w-full max-w-md">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Create account</h1>
-          <p className="text-gray-500 mb-6">Join Nestify today</p>
+          <p className="text-gray-500 mb-6">Join Ilé today</p>
 
           <div className="flex bg-gray-100 rounded-full p-1 mb-6">
             <button

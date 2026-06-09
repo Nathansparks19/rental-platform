@@ -1,174 +1,135 @@
 import { Search, MapPin, Bed, Bath, Heart } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { api } from '../utils/api'
+import Navbar from '../components/Navbar'
 
-const properties = [
-  {
-    id: 1,
-    title: '3 Bedroom Flat',
-    location: 'Lekki Phase 1, Lagos',
-    price: 1500000,
-    beds: 3,
-    baths: 2,
-    type: 'Apartment',
-    verified: true,
-    image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500',
-  },
-  {
-    id: 2,
-    title: '2 Bedroom Apartment',
-    location: 'Wuse 2, Abuja',
-    price: 1200000,
-    beds: 2,
-    baths: 2,
-    type: 'Apartment',
-    verified: true,
-    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500',
-  },
-  {
-    id: 3,
-    title: '4 Bedroom Duplex',
-    location: 'GRA, Port Harcourt',
-    price: 2500000,
-    beds: 4,
-    baths: 3,
-    type: 'Duplex',
-    verified: false,
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500',
-  },
-  {
-    id: 4,
-    title: '1 Bedroom Studio',
-    location: 'Yaba, Lagos',
-    price: 600000,
-    beds: 1,
-    baths: 1,
-    type: 'Studio',
-    verified: true,
-    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500',
-  },
-  {
-    id: 5,
-    title: '3 Bedroom Terrace',
-    location: 'Gwarinpa, Abuja',
-    price: 1800000,
-    beds: 3,
-    baths: 3,
-    type: 'Terrace',
-    verified: true,
-    image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=500',
-  },
-  {
-    id: 6,
-    title: '2 Bedroom Bungalow',
-    location: 'Ibadan, Oyo',
-    price: 800000,
-    beds: 2,
-    baths: 1,
-    type: 'Bungalow',
-    verified: false,
-    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500',
-  },
-]
+const container = {
+  maxWidth: '1100px',
+  margin: '0 auto',
+  padding: '0 40px',
+}
 
 export default function Listings() {
+  const [properties, setProperties] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [type, setType] = useState('')
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const data = await api.getProperties()
+      setProperties(data)
+      setLoading(false)
+    }
+    fetchProperties()
+  }, [])
+
+  const filtered = properties.filter(p => {
+    const matchSearch = p.location?.toLowerCase().includes(search.toLowerCase()) ||
+      p.title?.toLowerCase().includes(search.toLowerCase())
+    const matchType = type ? p.type === type : true
+    return matchSearch && matchType
+  })
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-5 bg-white border-b border-gray-100">
-        <Link to="/" className="text-2xl font-bold text-blue-600">Nestify</Link>
-        <div className="flex gap-4">
-          <button className="text-gray-600 hover:text-blue-600 font-medium">Login</button>
-          <button className="bg-blue-600 text-white px-5 py-2 rounded-full font-medium hover:bg-blue-700">
-            List Property
-          </button>
-        </div>
-      </nav>
+    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAF8', fontFamily: 'DM Sans, sans-serif' }}>
+      <Navbar />
 
       {/* Search Bar */}
-      <div className="bg-white border-b border-gray-100 px-8 py-4">
-        <div className="flex items-center gap-4 max-w-5xl mx-auto">
-          <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 flex-1">
-            <Search className="text-gray-400 mr-2" size={18} />
+      <div style={{ backgroundColor: 'white', borderBottom: '1px solid #e7e5e4' }}>
+        <div style={{ ...container, paddingTop: '20px', paddingBottom: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#F5F5F3', borderRadius: '999px', padding: '10px 16px', flex: 1 }}>
+            <Search size={18} style={{ color: '#a8a29e', marginRight: '8px' }} />
             <input
               type="text"
-              placeholder="Search location..."
-              className="bg-transparent outline-none text-gray-700 w-full"
+              placeholder="Search location or property..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              style={{ background: 'transparent', border: 'none', outline: 'none', fontSize: '15px', color: '#1A1A1A', width: '100%' }}
             />
           </div>
-          <select className="bg-gray-100 rounded-full px-4 py-2 outline-none text-gray-700">
-            <option>All Types</option>
+          <select
+            value={type}
+            onChange={e => setType(e.target.value)}
+            style={{ backgroundColor: '#F5F5F3', border: 'none', borderRadius: '999px', padding: '10px 16px', outline: 'none', fontSize: '15px', color: '#1A1A1A', cursor: 'pointer' }}
+          >
+            <option value="">All Types</option>
             <option>Apartment</option>
             <option>Duplex</option>
             <option>Terrace</option>
             <option>Bungalow</option>
             <option>Studio</option>
           </select>
-          <select className="bg-gray-100 rounded-full px-4 py-2 outline-none text-gray-700">
-            <option>Any Price</option>
-            <option>Under ₦500k</option>
-            <option>₦500k - ₦1M</option>
-            <option>₦1M - ₦2M</option>
-            <option>Above ₦2M</option>
-          </select>
-          <button className="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700">
-            Filter
-          </button>
         </div>
       </div>
 
       {/* Results */}
-      <div className="max-w-5xl mx-auto px-8 py-10">
-        <p className="text-gray-500 mb-6">{properties.length} properties found</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {properties.map((property) => (
-            <Link to={`/listings/${property.id}`} key={property.id}>
-              <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                {/* Image */}
-                <div className="relative">
-                  <img
-                    src={property.image}
-                    alt={property.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow">
-                    <Heart size={16} className="text-gray-400" />
-                  </button>
-                  {property.verified && (
-                    <span className="absolute top-3 left-3 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
-                      Verified
-                    </span>
-                  )}
-                </div>
-                {/* Details */}
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900">{property.title}</h3>
-                  <div className="flex items-center text-gray-500 text-sm mt-1">
-                    <MapPin size={14} className="mr-1" />
-                    {property.location}
-                  </div>
-                  <div className="flex items-center gap-4 mt-3 text-gray-500 text-sm">
-                    <span className="flex items-center gap-1">
-                      <Bed size={14} /> {property.beds} Beds
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Bath size={14} /> {property.baths} Baths
-                    </span>
-                    <span className="bg-gray-100 px-2 py-0.5 rounded-full text-xs">
-                      {property.type}
-                    </span>
-                  </div>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-blue-600 font-bold">
-                      ₦{property.price.toLocaleString()}/yr
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      ≈ ₦{Math.round(property.price / 12).toLocaleString()}/mo
-                    </span>
-                  </div>
-                </div>
+      <div style={container}>
+        <div style={{ paddingTop: '40px', paddingBottom: '80px' }}>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '80px 0', color: '#a8a29e' }}>Loading properties...</div>
+          ) : filtered.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '80px 0', color: '#a8a29e' }}>No properties found.</div>
+          ) : (
+            <>
+              <p style={{ color: '#78716c', marginBottom: '24px', fontSize: '15px' }}>{filtered.length} properties found</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+                {filtered.map((property) => (
+                  <Link to={`/listings/${property.id}`} key={property.id} style={{ textDecoration: 'none' }}>
+                    <div style={{ backgroundColor: 'white', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', transition: 'box-shadow 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)'}
+                      onMouseLeave={e => e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)'}
+                    >
+                      {/* Image */}
+                      <div style={{ position: 'relative' }}>
+                        <img
+                          src={property.image_url || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500'}
+                          alt={property.title}
+                          style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+                        />
+                        <button style={{ position: 'absolute', top: '12px', right: '12px', backgroundColor: 'white', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                          <Heart size={16} color="#a8a29e" />
+                        </button>
+                        {property.verified && (
+                          <span style={{ position: 'absolute', top: '12px', left: '12px', backgroundColor: '#0B4D2E', color: 'white', fontSize: '12px', padding: '4px 10px', borderRadius: '999px', fontWeight: 600 }}>
+                            Verified
+                          </span>
+                        )}
+                      </div>
+                      {/* Details */}
+                      <div style={{ padding: '16px' }}>
+                        <h3 style={{ fontWeight: 700, color: '#1A1A1A', marginBottom: '4px', fontSize: '16px' }}>{property.title}</h3>
+                        <div style={{ display: 'flex', alignItems: 'center', color: '#78716c', fontSize: '14px', marginBottom: '12px' }}>
+                          <MapPin size={14} style={{ marginRight: '4px' }} />
+                          {property.location}
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#78716c', fontSize: '14px', marginBottom: '12px' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Bed size={14} /> {property.beds} Beds
+                          </span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Bath size={14} /> {property.baths} Baths
+                          </span>
+                          <span style={{ backgroundColor: '#F5F5F3', padding: '2px 8px', borderRadius: '999px', fontSize: '12px' }}>
+                            {property.type}
+                          </span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ color: '#0B4D2E', fontWeight: 700, fontSize: '16px' }}>
+                            ₦{property.price?.toLocaleString()}/yr
+                          </span>
+                          <span style={{ fontSize: '13px', color: '#a8a29e' }}>
+                            ≈ ₦{Math.round(property.price / 12).toLocaleString()}/mo
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
-            </Link>
-          ))}
+            </>
+          )}
         </div>
       </div>
     </div>
