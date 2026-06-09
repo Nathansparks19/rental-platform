@@ -1,6 +1,6 @@
 import { Home, CreditCard, Heart, Bell, LogOut, CheckCircle, Clock, XCircle } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 const applications = [
   {
@@ -43,6 +43,17 @@ const statusConfig = {
 
 export default function TenantDashboard() {
   const [activeTab, setActiveTab] = useState('overview')
+  const [user, setUser] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const stored = localStorage.getItem('user')
+    if (!stored) {
+      navigate('/login')
+      return
+    }
+    setUser(JSON.parse(stored))
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -68,7 +79,10 @@ export default function TenantDashboard() {
             </button>
           ))}
         </nav>
-        <button className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-red-500 text-sm">
+        <button
+          onClick={() => { localStorage.clear(); navigate('/login') }}
+          className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-red-500 text-sm"
+        >
           <LogOut size={18} /> Sign Out
         </button>
       </div>
@@ -84,7 +98,9 @@ export default function TenantDashboard() {
               {activeTab === 'payments' && 'Rent Payments'}
               {activeTab === 'saved' && 'Saved Properties'}
             </h1>
-            <p className="text-gray-500 text-sm mt-1">Welcome back, John</p>
+            <p className="text-gray-500 text-sm mt-1">
+              Welcome back, {user?.full_name || user?.email}
+            </p>
           </div>
           <button className="relative p-2 bg-white rounded-full shadow-sm">
             <Bell size={20} className="text-gray-400" />
@@ -95,7 +111,6 @@ export default function TenantDashboard() {
         {/* Overview */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
-            {/* Stats */}
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-white rounded-2xl p-6 shadow-sm">
                 <p className="text-gray-500 text-sm">Active Applications</p>
@@ -112,7 +127,6 @@ export default function TenantDashboard() {
               </div>
             </div>
 
-            {/* Recent Applications */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
               <h2 className="font-semibold text-gray-900 mb-4">Recent Applications</h2>
               <div className="space-y-3">
