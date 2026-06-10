@@ -28,84 +28,110 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <nav className="flex items-center justify-between px-8 py-5 bg-white border-b border-gray-100">
-        <Link to="/" className="text-2xl font-bold text-blue-600">Ilé</Link>
+    <div style={{ minHeight: '100vh', backgroundColor: '#FAFAF8', fontFamily: 'DM Sans, sans-serif', display: 'flex', flexDirection: 'column' }}>
+
+      {/* Navbar */}
+      <nav style={{ backgroundColor: 'white', borderBottom: '1px solid #e7e5e4', padding: '0 40px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', backgroundColor: '#0B4D2E', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ color: '#E8A020', fontWeight: 900, fontSize: '16px', fontFamily: 'Playfair Display, serif' }}>I</span>
+          </div>
+          <span style={{ color: '#0B4D2E', fontWeight: 800, fontSize: '20px', fontFamily: 'Playfair Display, serif' }}>Ilé</span>
+        </Link>
+        <Link to="/login" style={{ color: '#0B4D2E', fontWeight: 600, fontSize: '15px', textDecoration: 'none' }}>
+          Sign in →
+        </Link>
       </nav>
 
-      <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="bg-white rounded-2xl shadow-sm p-8 w-full max-w-md">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create account</h1>
-          <p className="text-gray-500 mb-6">Join Ilé today</p>
+      {/* Content */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
+        <div style={{ width: '100%', maxWidth: '440px' }}>
 
-          <div className="flex bg-gray-100 rounded-full p-1 mb-6">
-            <button
-              onClick={() => setRole('tenant')}
-              className={`flex-1 py-2 rounded-full text-sm font-medium transition-all ${
-                role === 'tenant' ? 'bg-blue-600 text-white' : 'text-gray-500'
-              }`}
-            >
-              I'm a Tenant
-            </button>
-            <button
-              onClick={() => setRole('landlord')}
-              className={`flex-1 py-2 rounded-full text-sm font-medium transition-all ${
-                role === 'landlord' ? 'bg-blue-600 text-white' : 'text-gray-500'
-              }`}
-            >
-              I'm a Landlord
-            </button>
+          <div style={{ marginBottom: '32px' }}>
+            <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '40px', fontWeight: 800, color: '#0D1C12', marginBottom: '8px' }}>
+              Create account
+            </h1>
+            <p style={{ color: '#78716c', fontSize: '16px' }}>Join Ilé today — it's free</p>
           </div>
 
-          {error && (
-            <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl mb-4 text-sm">
-              {error}
-            </div>
-          )}
+          <div style={{ backgroundColor: 'white', borderRadius: '24px', padding: '40px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #e7e5e4' }}>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            {/* Role Toggle */}
+            <div style={{ display: 'flex', backgroundColor: '#F5F5F3', borderRadius: '12px', padding: '4px', marginBottom: '24px' }}>
+              {['tenant', 'landlord'].map(r => (
+                <button
+                  key={r}
+                  onClick={() => setRole(r)}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
+                    cursor: 'pointer', fontSize: '15px', fontWeight: 600,
+                    fontFamily: 'DM Sans, sans-serif', transition: 'all 0.15s',
+                    backgroundColor: role === r ? '#0B4D2E' : 'transparent',
+                    color: role === r ? 'white' : '#78716c',
+                  }}
+                >
+                  {r === 'tenant' ? "I'm a Tenant" : "I'm a Landlord"}
+                </button>
+              ))}
+            </div>
+
+            {error && (
+              <div style={{ backgroundColor: '#FEF2F2', color: '#DC2626', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', marginBottom: '20px' }}>
+                {error}
+              </div>
+            )}
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#0D1C12', marginBottom: '8px' }}>Full Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="John Doe"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-gray-700"
+                style={{ width: '100%', border: '1.5px solid #e7e5e4', borderRadius: '12px', padding: '12px 16px', outline: 'none', fontSize: '15px', color: '#1A1A1A', fontFamily: 'DM Sans, sans-serif', boxSizing: 'border-box', backgroundColor: '#FAFAF8' }}
+                onFocus={e => e.target.style.borderColor = '#0B4D2E'}
+                onBlur={e => e.target.style.borderColor = '#e7e5e4'}
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#0D1C12', marginBottom: '8px' }}>Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="you@email.com"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-gray-700"
+                style={{ width: '100%', border: '1.5px solid #e7e5e4', borderRadius: '12px', padding: '12px 16px', outline: 'none', fontSize: '15px', color: '#1A1A1A', fontFamily: 'DM Sans, sans-serif', boxSizing: 'border-box', backgroundColor: '#FAFAF8' }}
+                onFocus={e => e.target.style.borderColor = '#0B4D2E'}
+                onBlur={e => e.target.style.borderColor = '#e7e5e4'}
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+
+            <div style={{ marginBottom: '28px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#0D1C12', marginBottom: '8px' }}>Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-blue-500 text-gray-700"
+                style={{ width: '100%', border: '1.5px solid #e7e5e4', borderRadius: '12px', padding: '12px 16px', outline: 'none', fontSize: '15px', color: '#1A1A1A', fontFamily: 'DM Sans, sans-serif', boxSizing: 'border-box', backgroundColor: '#FAFAF8' }}
+                onFocus={e => e.target.style.borderColor = '#0B4D2E'}
+                onBlur={e => e.target.style.borderColor = '#e7e5e4'}
               />
             </div>
+
             <button
               onClick={handleRegister}
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-full font-semibold hover:bg-blue-700 disabled:opacity-50"
+              style={{ width: '100%', backgroundColor: '#0B4D2E', color: 'white', border: 'none', padding: '16px', borderRadius: '12px', fontWeight: 700, fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, fontFamily: 'DM Sans, sans-serif' }}
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
           </div>
 
-          <p className="text-center text-gray-500 mt-6">
+          <p style={{ textAlign: 'center', color: '#78716c', marginTop: '24px', fontSize: '15px' }}>
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 font-medium hover:underline">Sign in</Link>
+            <Link to="/login" style={{ color: '#0B4D2E', fontWeight: 700, textDecoration: 'none' }}>Sign in</Link>
           </p>
         </div>
       </div>
