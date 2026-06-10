@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import TenantDashboard from './pages/TenantDashboard'
 import LandlordDashboard from './pages/LandlordDashboard'
+import Waitlist from './pages/Waitlist'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/tenant" element={<TenantDashboard />} />
         <Route path="/landlord" element={<LandlordDashboard />} />
+        <Route path="/waitlist" element={<Waitlist />} />
       </Routes>
     </BrowserRouter>
   )

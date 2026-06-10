@@ -84,11 +84,7 @@ export default function Landing() {
 
             {/* Trust signals */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              {[
-                'No agent fees',
-                'Verified listings',
-                'Monthly payments',
-              ].map(item => (
+              {['No agent fees', 'Verified listings', 'Monthly payments'].map(item => (
                 <span key={item} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#78716c', fontWeight: 500 }}>
                   <CheckCircle size={14} style={{ color: '#0B4D2E' }} /> {item}
                 </span>
@@ -303,6 +299,9 @@ export default function Landing() {
               Create Account
             </Link>
           </div>
+          <Link to="/waitlist" style={{ color: '#78716c', fontSize: '14px', textDecoration: 'underline', marginTop: '20px', display: 'block' }}>
+            Not ready? Join the waitlist instead
+          </Link>
         </div>
       </section>
 
